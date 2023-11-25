@@ -2,6 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Survey {
+  id: ID!
+  title: String!
+  description: String
+}
+
 type Query {
-  sayHello: String!
+  surveys: [Survey!]!
+}
+
+type Mutation {
+  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+}
+
+input CreateSurveyInput {
+  title: String!
+  description: String
 }

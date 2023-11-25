@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  app:
+    container_name: survey-nestjs
+    build: .
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DATABASE_PORT}/${POSTGRES_DB}
+    networks:
+      - survey_network
+    depends_on:
+      - db
+  db:
+    container_name: postgres-db
+    image: postgres:15.2-alpine
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - survey_network
+
+volumes:
+  postgres_data:
+
+networks:
+  survey_network:

@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { HelloWorldResolver } from './hello-world.resolver';
+import { SurveyModule } from './survey/survey.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as ormconfig from '../ormconfig';
 
 @Module({
   imports: [
+    TypeOrmModule.forRoot(ormconfig),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      autoSchemaFile: 'schema.gql',
+      autoSchemaFile: true,
       driver: ApolloDriver,
     }),
+    SurveyModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, HelloWorldResolver],
 })
 export class AppModule {}

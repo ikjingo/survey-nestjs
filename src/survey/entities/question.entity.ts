@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql'
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 import { Survey } from './survey.entity';
 
 @ObjectType()
@@ -9,10 +9,6 @@ export class Question {
   @Field(() => ID) 
   id: number;
 
-  @OneToOne(() => Survey, survey => survey.questions)
-  @Field(() => [Survey])
-  survey: Survey;
-
   @Column() 
   @Field()
   text: string;
@@ -20,6 +16,9 @@ export class Question {
   @Column()
   @Field() 
   order: number;
+
+  @ManyToOne(() => Survey, survey => survey.questions)
+  survey: Survey;
 
   // @OneToMany(() => Option, option => option.question) 
   // options: Option[];

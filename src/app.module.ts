@@ -5,6 +5,7 @@ import { SurveyModule } from './survey/module/survey.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import * as ormconfig from '../ormconfig'
 import { QuestionModule } from './survey/module/question.module'
+import { OptionModule } from './survey/module/option.module'
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { QuestionModule } from './survey/module/question.module'
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: true,
       driver: ApolloDriver,
-      includeStacktraceInErrorResponses: false,
+      // includeStacktraceInErrorResponses: false,
       formatError: (error) => {
         console.error("--- GraphQL Error ---")
         console.error("Path:", error.path)
@@ -23,6 +24,7 @@ import { QuestionModule } from './survey/module/question.module'
     }),
     SurveyModule,
     QuestionModule,
+    OptionModule,
   ],
 })
 export class AppModule {}

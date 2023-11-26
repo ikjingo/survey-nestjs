@@ -11,3 +11,15 @@ export class CreateOptionInput {
   @Field()
   score: number;
 }
+
+@InputType()
+export class UpdateOptionInput {
+  @Field(() => ID)
+  id: number;
+
+  @Field({ nullable: true })
+  text?: string;
+
+  @Field({ nullable: true })
+  score?: number;
+}

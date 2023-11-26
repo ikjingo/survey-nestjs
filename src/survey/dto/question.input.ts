@@ -11,3 +11,15 @@ export class CreateQuestionInput {
   @Field() 
   order: number;
 }
+
+@InputType()
+export class UpdateQuestionInput {
+  @Field(() => ID)
+  id: number;
+
+  @Field({ nullable: true })
+  text?: string;
+
+  @Field({ nullable: true })
+  order?: number;
+}

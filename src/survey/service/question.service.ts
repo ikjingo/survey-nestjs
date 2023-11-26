@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Question } from '../entities/question.entity'
-import { CreateQuestionInput } from '../dto/question.input';
+import { CreateQuestionInput, UpdateQuestionInput } from '../dto/question.input';
 import { Survey } from '../entities/survey.entity';
 import { ResourceNotFoundException } from 'src/common/exceptions/resource-not-found.exception';
 import { Constants } from 'src/common/constants';
@@ -31,6 +31,32 @@ export class QuestionService {
             });
 
         return this.questionRepository.save(question);
+    }
+
+    async update(updateQuestionInput: UpdateQuestionInput): Promise<Question> {
+        const { id, ...updateData } = updateQuestionInput
+
+        const question = await this.questionRepository.findOne({ where: { id } })
+        // 조회한 문항 존재하지 않으면, ResourceNotFoundException을 발생
+        if (!question) {
+            throw new ResourceNotFoundException(Constants.RESOURCE_QUESTION, id)
+        }
+
+        await this.questionRepository.update(id, updateData)
+        question.text = updateData.text
+        question.order = updateData.order
+
+        return question
+    }
+
+    async remove(id: number): Promise<boolean> {
+        const result = await this.questionRepository.delete(id)
+        // 삭제하려는 문항 ID가 존재하지 않으면, ResourceNotFoundException을 발생
+        if (result.affected === 0) {
+            throw new ResourceNotFoundException(Constants.RESOURCE_QUESTION, id)
+        }
+
+        return true
     }
 
     async findBySurveyId(surveyId: number): Promise<Question[]> {

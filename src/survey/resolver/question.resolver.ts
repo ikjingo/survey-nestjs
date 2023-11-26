@@ -13,7 +13,7 @@ export class QuestionResolver {
   }
 
   @Query(() => [Question])
-  questionsBySurvey(@Args('surveyId', { type: () => ID }) surveyId: number): Promise<Question[]> {
+  async questionsBySurvey(@Args('surveyId', { type: () => ID }) surveyId: number): Promise<Question[]> {
     return this.questionService.findBySurveyId(surveyId);
   }
 }

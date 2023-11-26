@@ -35,7 +35,8 @@ export class QuestionService {
 
     async findBySurveyId(surveyId: number): Promise<Question[]> {
         return this.questionRepository.find({
-          where: { survey: { id: surveyId} }
-        });
+            where: { survey: { id: surveyId } },
+            relations: ['options']
+          });
     }
 }

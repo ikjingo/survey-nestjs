@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql'
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { Question } from './question.entity'
 
 @ObjectType()
 @Entity()
@@ -15,4 +16,8 @@ export class Survey {
   @Column({ nullable: true })
   @Field({ nullable: true })
   description: string
+
+  @OneToMany(() => Question, question => question.survey)
+  @Field(() => [Question], { nullable: true })
+  questions: Question[];
 }

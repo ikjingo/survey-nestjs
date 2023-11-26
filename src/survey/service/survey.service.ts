@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Survey } from './entities/survey.entity'
-import { CreateSurveyInput, UpdateSurveyInput } from './dto/survey.input'
+import { Survey } from '../entities/survey.entity'
+import { CreateSurveyInput, UpdateSurveyInput } from '../dto/survey.input'
 import { ResourceNotFoundException } from 'src/common/exceptions/resource-not-found.exception'
 import { Constants } from 'src/common/constants'
 

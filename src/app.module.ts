@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
-import { SurveyModule } from './survey/survey.module'
+import { SurveyModule } from './survey/module/survey.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import * as ormconfig from '../ormconfig'
+import { QuestionModule } from './survey/module/question.module'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import * as ormconfig from '../ormconfig'
       }
     }),
     SurveyModule,
+    QuestionModule,
   ],
 })
 export class AppModule {}

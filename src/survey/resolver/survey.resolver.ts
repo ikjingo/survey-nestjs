@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql'
-import { SurveyService } from './survey.service'
-import { Survey } from './entities/survey.entity'
-import { CreateSurveyInput, UpdateSurveyInput } from './dto/survey.input'
+import { SurveyService } from '../service/survey.service'
+import { Survey } from '../entities/survey.entity'
+import { CreateSurveyInput, UpdateSurveyInput } from '../dto/survey.input'
 
 @Resolver(() => Survey)
 export class SurveyResolver {

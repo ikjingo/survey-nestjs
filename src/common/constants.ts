@@ -1,4 +1,4 @@
 export class Constants {
   // RESOURCE
-  static readonly RESOURCE_SURVEY = 'survey';
+  static readonly RESOURCE_SURVEY = 'survey'
 }

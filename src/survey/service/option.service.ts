@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Option } from '../entities/Option.entity'
+import { Option } from '../entities/option.entity'
 import { CreateOptionInput, UpdateOptionInput } from '../dto/option.input';
 import { Question } from '../entities/question.entity';
 import { ResourceNotFoundException } from 'src/common/exceptions/resource-not-found.exception';

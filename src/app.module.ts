@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import * as ormconfig from '../ormconfig'
 import { QuestionModule } from './survey/module/question.module'
 import { OptionModule } from './survey/module/option.module'
+import { AnswerModule } from './survey/module/answer.module'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { OptionModule } from './survey/module/option.module'
     SurveyModule,
     QuestionModule,
     OptionModule,
+    AnswerModule,
   ],
 })
 export class AppModule {}

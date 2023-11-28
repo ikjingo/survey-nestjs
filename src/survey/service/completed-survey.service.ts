@@ -39,10 +39,14 @@ export class CompletedSurveyService {
     // 완료된 설문지를 생성하고 저장합니다.
     const completedSurvey = this.completedSurveyRepository.create({
         userId: userId,
-        survey: { id: surveyId },
+        surveyId: surveyId,
         surveyContent,
         answers: userAnswers
     });
     return this.completedSurveyRepository.save(completedSurvey);
+  }
+
+  async completedSurveys(userId: string): Promise<CompletedSurvey[]> {
+    return this.completedSurveyRepository.find({ where: { userId } });
   }
 }

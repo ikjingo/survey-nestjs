@@ -1,6 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Survey } from './survey.entity';
 
 @ObjectType()
 @Entity()
@@ -12,11 +11,6 @@ export class CompletedSurvey {
   @Column()
   @Field() 
   userId: string;
-
-  @ManyToOne(() => Survey)
-  @JoinColumn({ name: 'surveyId' })
-  @Field(() => Survey)
-  survey: Survey;
 
   @Column()
   surveyId: number;

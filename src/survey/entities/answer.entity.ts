@@ -27,6 +27,10 @@ export class Answer {
   questionId: number;
 
   @ManyToOne(() => Option)
+  @JoinColumn({ name: 'optionId' })
   @Field()
   option: Option;
+
+  @Column()
+  optionId: number;
 }

@@ -7,6 +7,7 @@ import * as ormconfig from '../ormconfig'
 import { QuestionModule } from './survey/module/question.module'
 import { OptionModule } from './survey/module/option.module'
 import { AnswerModule } from './survey/module/answer.module'
+import { CompletedSurveyModule } from './survey/module/completed-survey.module'
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AnswerModule } from './survey/module/answer.module'
     QuestionModule,
     OptionModule,
     AnswerModule,
+    CompletedSurveyModule,
   ],
 })
 export class AppModule {}

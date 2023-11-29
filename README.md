@@ -63,24 +63,6 @@ docker-compose build
 docker-compose up -d
 ```
 
-## API 사용 예시
-
-GraphQL API 사용 방법에 대한 간단한 예시를 제공합니다.
-
-```graphql
-# 설문지 완료
-mutation CompleteSurvey($userId: String!, $surveyId: Int!) {
-  completeSurvey(userId: $userId, surveyId: $surveyId) {
-    id
-    userId
-    surveyId
-    surveyContent
-    answers
-  }
-}
-
-```
-
 ---
 
 ### 엔티티 설명
@@ -122,6 +104,187 @@ mutation CompleteSurvey($userId: String!, $surveyId: Int!) {
 - `Option`은 특정 `Question`에 속합니다.
 - `Answer`는 사용자의 답변을 나타내며, 특정 `Question`과 `Option`에 연결됩니다.
 - `CompletedSurvey`는 사용자가 완료한 설문지를 나타내며, 해당 사용자의 답변과 설문지 내용을 저장합니다.
+<img src="./img/Survery-ERD.png">
 
-<img src="./img/Survery-ERD.pdf" width="600" height="600">
 ---
+## API 설명
+
+### Survey 관련 API
+```
+type Survey {
+  id: ID!
+  title: String!
+  description: String
+}
+
+type Query {
+  surveys: [Survey!]!
+}
+
+type Mutation {
+  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+  updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
+  removeSurvey(id: ID!): Boolean!
+}
+
+input CreateSurveyInput {
+  title: String!
+  description: String
+}
+
+input UpdateSurveyInput {
+  id: ID!
+  title: String
+  description: String
+}
+```
+#### 1. 설문지 생성 (새로운 설문지를 생성합니다.)
+
+#### 2. 설문지 업데이트 (기존 설문지를 업데이트합니다.)
+
+#### 3. 설문지 삭제 (특정 설문지를 삭제합니다.)
+
+#### 4. 모든 설문지 조회 (모든 설문지를 조회합니다.)
+
+### Question 관련 API
+```
+type Question {
+  id: ID!
+  text: String!
+  order: Float!
+  options: [Option!]
+}
+
+type Query {
+  questionsBySurvey(surveyId: ID!): [Question!]!
+}
+
+type Mutation {
+  createQuestion(createQuestionInput: CreateQuestionInput!): Question!
+  updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
+  removeQuestion(id: ID!): Boolean!
+}
+
+input CreateQuestionInput {
+  surveyId: ID!
+  text: String!
+  order: Float!
+}
+
+input UpdateQuestionInput {
+  id: ID!
+  text: String
+  order: Float
+}
+```
+#### 1. 문항 생성 (새로운 문항을 생성합니다.)
+
+#### 2. 문항 업데이트 (기존 문항을 업데이트합니다.)
+
+#### 3. 문항 삭제 (특정 문항을 삭제합니다.)
+
+#### 4. 특정 설문지의 모든 문항 조회 (특정 설문지에 속한 모든 문항을 조회합니다.)
+
+### Option 관련 API
+```
+type Option {
+  id: ID!
+  text: String!
+  score: Float!
+}
+
+type Query {
+  optionsByQuestion(questionId: ID!): [Option!]!
+}
+
+type Mutation {
+  createOption(createOptionInput: CreateOptionInput!): Option!
+  updateOption(updateOptionInput: UpdateOptionInput!): Option!
+  removeOption(id: ID!): Boolean!
+}
+
+input CreateOptionInput {
+  questionId: ID!
+  text: String!
+  score: Float!
+}
+
+input UpdateOptionInput {
+  id: ID!
+  text: String
+  score: Float
+}
+```
+#### 1. 선택지 생성 (새로운 선택지를 생성합니다.)
+
+#### 2. 선택지 업데이트 (기존 선택지를 업데이트합니다.)
+
+#### 3. 선택지 삭제 (특정 선택지를 삭제합니다.)
+
+#### 4. 특정 문항의 모든 선택지 조회 (특정 문항에 속한 모든 선택지를 조회합니다.)
+
+### Answer 관련 API
+```
+type Answer {
+  id: ID!
+  userId: String!
+  option: Option!
+}
+
+type Query {
+  answers(userId: String!, surveyId: ID!, questionId: ID): [Answer!]!
+}
+
+type Mutation {
+  createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
+  updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
+  removeAnswer(id: ID!): Boolean!
+}
+
+input CreateAnswerInput {
+  questionId: ID!
+  optionId: ID!
+  userId: String!
+}
+
+input UpdateAnswerInput {
+  id: ID!
+  optionId: ID!
+}
+```
+#### 1. 답변 생성 또는 업데이트 (새로운 답변을 생성하거나 기존 답변을 업데이트합니다.)
+
+#### 2. 답변 업데이트 (기존 답변을 업데이트합니다.)
+
+#### 3. 답변 삭제 (특정 답변을 삭제합니다.)
+
+#### 4. 특정 사용자의 답변 조회 (특정 사용자의 모든 답변 또는 특정 설문지 또는 문항에 대한 답변을 조회합니다.)
+
+### CompeltedSurvey 관련 API
+```
+type CompletedSurvey {
+  id: ID!
+  userId: String!
+  answers: String!
+  surveyContent: String!
+}
+
+type Query {
+  completedSurveys(userId: String!): [CompletedSurvey!]!
+}
+
+type Mutation {
+  createCompletedSurvey(
+    createCompletedSurveyInput: CreateCompletedSurveyInput!
+  ): CompletedSurvey!
+}
+
+input CreateCompletedSurveyInput {
+  userId: String!
+  surveyId: ID!
+}
+```
+#### 1. 설문지 완료 (설문지의 모든 내용과 답변을 저장합니다.)
+
+#### 2. 완료된 설문지 조회 (완료된 설문지를 조회합니다.)
+

@@ -1,6 +1,6 @@
-const dotenv = require('dotenv');
+const dotenv = require('dotenv')
 
-dotenv.config();
+dotenv.config()
 
 module.exports = {
   type: 'postgres',
@@ -11,4 +11,4 @@ module.exports = {
   database: process.env.DB_DATABASE,
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
-};
+}

@@ -1,22 +1,22 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql'
 
 @InputType()
 export class CreateSurveyInput {
   @Field()
-  title: string;
+  title: string
 
   @Field({ nullable: true })
-  description?: string;
+  description?: string
 }
 
 @InputType()
 export class UpdateSurveyInput {
   @Field(() => ID)
-  id: number;
+  id: number
 
   @Field({ nullable: true })
-  title?: string;
+  title?: string
 
   @Field({ nullable: true })
-  description?: string;
+  description?: string
 }

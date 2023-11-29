@@ -63,39 +63,59 @@ docker-compose build
 docker-compose up -d
 ```
 
+물론입니다. 제공하신 엔티티 정보를 바탕으로 테이블 설계 문서를 작성하겠습니다. 아래는 각 엔티티에 대한 테이블 설계입니다.
+
 ---
 
-### 엔티티 설명
+## 테이블 설계
 
-1. **Survey**
-   - `id`: 설문지의 고유 식별자.
-   - `title`: 설문지의 제목.
-   - `description`: 설문지의 설명 (optional).
+### 설문지 테이블 (Survey)
 
-2. **Question**
-   - `id`: 문항의 고유 식별자.
-   - `text`: 문항의 내용.
-   - `order`: 문항의 순서.
-   - `surveyId`: 속한 설문지 (Foreign Key from Survey).
+| 컬럼 이름     | 데이터 타입      | 설명                 |
+|:------------:|:---------------:|:-------------------|
+| id           | bigint(20)      | Primary Key, Auto Increment |
+| title        | varchar(255)    | 설문지 제목            |
+| description  | text            | 설문지 설명 (선택적)     |
 
-3. **Option**
-   - `id`: 옵션의 고유 식별자.
-   - `text`: 옵션의 내용.
-   - `score`: 옵션의 점수.
-   - `questionId`: 속한 문항 (Foreign Key from Question).
+### 문항 테이블 (Question)
 
-4. **Answer**
-   - `id`: 답변의 고유 식별자.
-   - `userId`: 답변한 사용자의 식별자.
-   - `questionId`: 답변한 문항의 식별자. (Foreign Key from Question)
-   - `optionId`: 선택한 옵션의 식별자. (Foreign Key from Option)
+| 컬럼 이름     | 데이터 타입      | 설명                    |
+|:------------:|:---------------:|:----------------------|
+| id           | bigint(20)      | Primary Key, Auto Increment |
+| text         | varchar(255)    | 문항 내용               |
+| order        | int             | 문항 순서               |
+| survey_id    | bigint(20)      | Foreign Key (Survey)   |
 
-5. **CompletedSurvey**
-   - `id`: 완료된 설문지의 고유 식별자.
-   - `userId`: 설문을 완료한 사용자의 식별자.
-   - `surveyId`: 완료한 설문지의 식별자.
-   - `answers`: 사용자의 답변들 (JSON 형식).
-   - `surveyContent`: 완료 시점의 설문지 내용 (JSON 형식).
+### 선택지 테이블 (Option)
+
+| 컬럼 이름     | 데이터 타입      | 설명                    |
+|:------------:|:---------------:|:----------------------|
+| id           | bigint(20)      | Primary Key, Auto Increment |
+| text         | varchar(255)    | 선택지 내용              |
+| score        | int             | 점수                   |
+| question_id  | bigint(20)      | Foreign Key (Question) |
+
+### 답변 테이블 (Answer)
+
+| 컬럼 이름     | 데이터 타입      | 설명                     |
+|:------------:|:---------------:|:-----------------------|
+| id           | bigint(20)      | Primary Key, Auto Increment |
+| user_id      | varchar(255)    | 유저 식별자                |
+| question_id  | bigint(20)      | Foreign Key (Question)  |
+| option_id    | bigint(20)      | Foreign Key (Option)    |
+| survey_id    | bigint(20)      | Foreign Key (Survey)    |
+
+### 완료된 설문지 테이블 (CompletedSurvey)
+
+| 컬럼 이름     | 데이터 타입      | 설명                           |
+|:------------:|:---------------:|:-----------------------------|
+| id           | bigint(20)      | Primary Key, Auto Increment   |
+| user_id      | varchar(255)    | 유저 식별자                      |
+| survey_id    | bigint(20)      | 설문지 식별자 (Foreign Key)       |
+| answers      | json            | 사용자의 답변 (JSON 형식)         |
+| survey_content | json          | 완료 시점의 설문지 내용 (JSON 형식) |
+
+---
 
 ### 데이터 관계
 
@@ -105,6 +125,10 @@ docker-compose up -d
 - `Answer`는 사용자의 답변을 나타내며, 특정 `Question`과 `Option`에 연결됩니다.
 - `CompletedSurvey`는 사용자가 완료한 설문지를 나타내며, 해당 사용자의 답변과 설문지 내용을 저장합니다.
 <img src="./img/Survery-ERD.png">
+
+---
+## API 문서 (GraphQL Playground)
+http://localhost:4000/graphql
 
 ---
 ## API 설명
@@ -138,13 +162,13 @@ input UpdateSurveyInput {
   description: String
 }
 ```
-#### 1. 설문지 생성 (새로운 설문지를 생성합니다.)
+#### 설문지 생성 (새로운 설문지를 생성합니다.)
 
-#### 2. 설문지 업데이트 (기존 설문지를 업데이트합니다.)
+#### 설문지 업데이트 (기존 설문지를 업데이트합니다.)
 
-#### 3. 설문지 삭제 (특정 설문지를 삭제합니다.)
+#### 설문지 삭제 (특정 설문지를 삭제합니다.)
 
-#### 4. 모든 설문지 조회 (모든 설문지를 조회합니다.)
+#### 모든 설문지 조회 (모든 설문지를 조회합니다.)
 
 ### Question 관련 API
 ```
@@ -177,13 +201,13 @@ input UpdateQuestionInput {
   order: Float
 }
 ```
-#### 1. 문항 생성 (새로운 문항을 생성합니다.)
+#### 문항 생성 (새로운 문항을 생성합니다.)
 
-#### 2. 문항 업데이트 (기존 문항을 업데이트합니다.)
+#### 문항 업데이트 (기존 문항을 업데이트합니다.)
 
-#### 3. 문항 삭제 (특정 문항을 삭제합니다.)
+#### 문항 삭제 (특정 문항을 삭제합니다.)
 
-#### 4. 특정 설문지의 모든 문항 조회 (특정 설문지에 속한 모든 문항을 조회합니다.)
+#### 특정 설문지의 모든 문항 조회 (특정 설문지에 속한 모든 문항을 조회합니다.)
 
 ### Option 관련 API
 ```
@@ -215,13 +239,13 @@ input UpdateOptionInput {
   score: Float
 }
 ```
-#### 1. 선택지 생성 (새로운 선택지를 생성합니다.)
+#### 선택지 생성 (새로운 선택지를 생성합니다.)
 
-#### 2. 선택지 업데이트 (기존 선택지를 업데이트합니다.)
+#### 선택지 업데이트 (기존 선택지를 업데이트합니다.)
 
-#### 3. 선택지 삭제 (특정 선택지를 삭제합니다.)
+#### 선택지 삭제 (특정 선택지를 삭제합니다.)
 
-#### 4. 특정 문항의 모든 선택지 조회 (특정 문항에 속한 모든 선택지를 조회합니다.)
+#### 특정 문항의 모든 선택지 조회 (특정 문항에 속한 모든 선택지를 조회합니다.)
 
 ### Answer 관련 API
 ```
@@ -252,13 +276,13 @@ input UpdateAnswerInput {
   optionId: ID!
 }
 ```
-#### 1. 답변 생성 또는 업데이트 (새로운 답변을 생성하거나 기존 답변을 업데이트합니다.)
+#### 답변 생성 또는 업데이트 (새로운 답변을 생성하거나 기존 답변을 업데이트합니다.)
 
-#### 2. 답변 업데이트 (기존 답변을 업데이트합니다.)
+#### 답변 업데이트 (기존 답변을 업데이트합니다.)
 
-#### 3. 답변 삭제 (특정 답변을 삭제합니다.)
+#### 답변 삭제 (특정 답변을 삭제합니다.)
 
-#### 4. 특정 사용자의 답변 조회 (특정 사용자의 모든 답변 또는 특정 설문지 또는 문항에 대한 답변을 조회합니다.)
+#### 특정 사용자의 답변 조회 (특정 사용자의 모든 답변 또는 특정 설문지 또는 문항에 대한 답변을 조회합니다.)
 
 ### CompeltedSurvey 관련 API
 ```
@@ -284,7 +308,7 @@ input CreateCompletedSurveyInput {
   surveyId: ID!
 }
 ```
-#### 1. 설문지 완료 (설문지의 모든 내용과 답변을 저장합니다.)
+#### 설문지 완료 (설문지의 모든 내용과 답변을 저장합니다.)
 
-#### 2. 완료된 설문지 조회 (완료된 설문지를 조회합니다.)
+#### 완료된 설문지 조회 (완료된 설문지를 조회합니다.)
 

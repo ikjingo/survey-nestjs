@@ -15,12 +15,13 @@ import { CompletedSurveyModule } from './survey/module/completed-survey.module'
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: true,
       driver: ApolloDriver,
-      // includeStacktraceInErrorResponses: false,
+      includeStacktraceInErrorResponses: false,
       formatError: (error) => {
         console.error("--- GraphQL Error ---")
         console.error("Path:", error.path)
         console.error("Message:", error.message)
         console.error(error.extensions)
+        
         return error
       }
     }),

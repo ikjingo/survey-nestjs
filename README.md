@@ -109,7 +109,7 @@ docker-compose up -d
 |:------------:|:---------------:|:-----------------------------|
 | id           | bigint(20)      | Primary Key, Auto Increment   |
 | user_id      | varchar(255)    | 유저 식별자                      |
-| survey_id    | bigint(20)      | 설문지 식별자 (Foreign Key)       |
+| survey_id    | bigint(20)      | 설문지 식별자                    |
 | answers      | json            | 사용자의 답변 (JSON 형식)         |
 | survey_content | json          | 완료 시점의 설문지 내용 (JSON 형식) |
 
